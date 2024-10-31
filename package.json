@@ -1,7 +1,7 @@
 {
   "name": "dog-resume",
   "version": "1.0.0",
-  "description": "\"A resume for your dog\"",
+  "description": "\"A RESTful API to build and maintain dog resumes (lists of tricks and emergency contact info)\"",
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/app.js",

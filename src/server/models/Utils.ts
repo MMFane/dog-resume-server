@@ -4,6 +4,7 @@ export enum Color {
     blue = "BLUE",
     gold = "GOLD",
     grey = "GREY",
+    gray = "GRAY",
     orange = "ORANGE",
     pink = "PINK",
     red = "RED",
