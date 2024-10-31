@@ -1,0 +1,20 @@
+{
+  "name": "dog-resume",
+  "version": "1.0.0",
+  "description": "\"A resume for your dog\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "dev": "nodemon src/app.ts"
+  },
+  "author": "Sam Aran",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.6.3"
+  }
+}
