@@ -1,4 +1,6 @@
 import express, { Request, Response } from "express";
+import { Dog } from "./server/models/Dog";
+import { v4 as uuidv4 } from "uuid";
 const app = express();
 const port = 3000;
 
@@ -18,10 +20,18 @@ app.get("/dogs/:id", (req: Request, res: Response) => {
 
 app.post("/dogs/", (req: Request, res: Response) => {
     const data = req.body;
-    console.log(data);
+    const dog: Dog = {
+        id: uuidv4(),
+        name: data.name,
+        description: data.description,
+        colors: data.colors,
+        weight: data.weight,
+        birthdate: data.birthdate,
+    };
+
     res.status(200).json({
-        message: `This will create a dog with the following data`,
-        data,
+        message: `Created dog`,
+        dog,
     });
 });
 

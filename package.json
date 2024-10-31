@@ -10,7 +10,9 @@
   "author": "Sam Aran",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1"
+    "@types/uuid": "^10.0.0",
+    "express": "^4.21.1",
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
