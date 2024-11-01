@@ -29,8 +29,30 @@ app.get("/dogs", (req: Request, res: Response) => {
 });
 
 app.get("/dogs/:id", (req: Request, res: Response) => {
-    res.send(`This will return dog with id ${req.params.id}`);
+    const id = req.params.id;
+
+    fs.readFile("dogs.json", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error retrieving dogs from file");
+            return;
+        } else {
+            const jsonData = JSON.parse(data);
+            if (!jsonData[id]) {
+                res.status(404).send(
+                    `Couldn't find dog with id ${id} in the file`
+                );
+                return;
+            }
+            res.status(200).json({
+                message: `Successfully retrieved dog with id ${id}`,
+                dog: jsonData[id],
+            });
+        }
+    });
 });
+
+// TODO add PUT/PATCH to update existing dog
 
 app.post("/dogs", (req: Request, res: Response) => {
     const data = req.body;
