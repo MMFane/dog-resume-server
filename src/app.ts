@@ -44,3 +44,12 @@ app.post("/dogs", (req: Request, res: Response) => {
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+process.on("SIGTERM", () => {
+    console.debug("SIGTERM signal received: closing HTTP server");
+    server.close(() => {
+        console.debug("HTTP server closed");
+    });
+});
+
+export default server;
