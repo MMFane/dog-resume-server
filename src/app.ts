@@ -1,40 +1,55 @@
 import express, { Request, Response } from "express";
-import { Dog } from "./server/models/Dog";
-import { v4 as uuidv4 } from "uuid";
+import { getDogs, getDog, updateDog, postDog } from "./routeUtils";
+
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
+const fileName = "dogs.json";
+
+const withFileName = (
+    fileName: string,
+    callback: Function,
+    req: Request,
+    res: Response
+) => {
+    return callback(fileName, req, res);
+};
+
+app.get("/", (_req: Request, res: Response) => {
+    try {
+        res.send("Hello World!");
+    } catch (err) {
+        console.log(err);
+    }
 });
 
-app.get("/dogs", (req: Request, res: Response) => {
-    res.send("This will return all dogs");
-});
+app.get("/dogs", (req: Request, res: Response) =>
+    withFileName(fileName, getDogs, req, res)
+);
 
 app.get("/dogs/:id", (req: Request, res: Response) => {
-    res.send(`This will return dog with id ${req.params.id}`);
+    withFileName(fileName, getDog, req, res);
 });
 
-app.post("/dogs/", (req: Request, res: Response) => {
-    const data = req.body;
-    const dog: Dog = {
-        id: uuidv4(),
-        name: data.name,
-        description: data.description,
-        colors: data.colors,
-        weight: data.weight,
-        birthdate: data.birthdate,
-    };
+app.patch("/dogs/:id", (req: Request, res: Response) => {
+    withFileName(fileName, updateDog, req, res);
+});
 
-    res.status(200).json({
-        message: `Created dog`,
-        dog,
+app.post("/dogs", (req: Request, res: Response) => {
+    withFileName(fileName, postDog, req, res);
+});
+
+const server = app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});
+
+process.on("SIGTERM", () => {
+    console.debug("SIGTERM signal received: closing HTTP server");
+    server.close(() => {
+        console.debug("HTTP server closed");
     });
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+export default server;
