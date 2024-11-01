@@ -52,7 +52,43 @@ app.get("/dogs/:id", (req: Request, res: Response) => {
     });
 });
 
-// TODO add PUT/PATCH to update existing dog
+app.patch("/dogs/:id", (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    fs.readFile("dogs.json", "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Error retrieving dogs from file");
+            return;
+        } else {
+            const jsonData = JSON.parse(data);
+            if (!jsonData[id]) {
+                res.status(404).send(
+                    `Couldn't find dog with id ${id} in the file`
+                );
+                return;
+            }
+            const body = req.body;
+
+            jsonData[id] = {
+                ...jsonData[id],
+                ...body,
+            };
+            fs.writeFile("dogs.json", JSON.stringify(jsonData), (err) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send("Error saving dog to file");
+                    return;
+                } else {
+                    res.status(200).json({
+                        message: `Successfully updated dog with id ${id}`,
+                        dog: jsonData[id],
+                    });
+                }
+            });
+        }
+    });
+});
 
 app.post("/dogs", (req: Request, res: Response) => {
     const data = req.body;
