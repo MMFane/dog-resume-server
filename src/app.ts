@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getDogs, getDog, updateDog, createDog } from "./routeUtils";
+import { getDogs, getDog, updateDog, postDog } from "./routeUtils";
 
 const app = express();
 const port = 3000;
@@ -38,7 +38,7 @@ app.patch("/dogs/:id", (req: Request, res: Response) => {
 });
 
 app.post("/dogs", (req: Request, res: Response) => {
-    withFileName(fileName, createDog, req, res);
+    withFileName(fileName, postDog, req, res);
 });
 
 const server = app.listen(port, () => {
